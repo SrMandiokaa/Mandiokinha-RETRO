@@ -4,179 +4,123 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Mandiokinha">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#030603">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-180.png">
-<title>Mandiokinha RETRO</title>
+<title>Mandiokinha RETRO: teste</title>
 <style>
 :root{--bg:#030603;--surface:#0C130C;--ink:#E8FFE2;--mute:#8A9C86;--line:#1C2B1C;--accent:#39FF14;--on:#021002;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+box-sizing:border-box;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box}
-html{color-scheme:dark;scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;background-image:radial-gradient(120% 55% at 50% 112%,rgba(57,255,20,.16),transparent 62%);background-attachment:fixed}
-main{max-width:520px;margin:0 auto;padding:20px 16px 48px}
+html{color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;background-image:radial-gradient(120% 55% at 50% 112%,rgba(57,255,20,.16),transparent 62%);background-attachment:fixed}
+main{max-width:560px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:26px;line-height:1.15;margin:0 0 4px}
+h2{font-size:17px;margin:26px 0 8px}
+p{margin:0 0 12px;color:var(--mute);font-size:14px}
 button,input{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.top{display:flex;justify-content:space-between;align-items:center}
-.logo{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--accent);text-shadow:0 0 10px rgba(57,255,20,.55)}
-.logo img{border-radius:50%;filter:drop-shadow(0 0 6px rgba(57,255,20,.55))}
-.count{color:var(--mute);font-size:14px}
-h1{font-size:32px;line-height:1.1;margin:16px 0 12px}
-.row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
-.chip{flex:none;display:flex;align-items:center;gap:7px;padding:9px 15px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);font-weight:500;font-size:14px;cursor:pointer}
-.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.add{border-color:var(--accent);color:var(--accent);font-weight:700}
-.lab{margin:14px 0 6px;color:var(--mute);font-size:14px}
-.search{width:100%;margin:14px 0 4px;padding:13px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface)}
-.dot{width:9px;height:9px;border-radius:2px}
-.cv{position:relative;display:grid;place-items:center;aspect-ratio:1;border-radius:16px;overflow:hidden}
-.cv svg{width:58%;filter:drop-shadow(0 0 5px #39FF14)}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px 14px;margin-top:14px}
-@media(min-width:480px){.grid{grid-template-columns:repeat(3,1fr)}}
-.cell{position:relative}
-.card{display:block;width:100%;text-align:left;background:none;border:0;padding:0;cursor:pointer}
-.tag{position:absolute;left:8px;bottom:8px;padding:2px 8px;border-radius:6px;background:rgba(0,0,0,.6);color:#fff;font-weight:500;font-size:11px}
-.star{position:absolute;right:8px;top:6px;color:var(--accent);font-size:18px;text-shadow:0 0 8px #39FF14}
-.name{margin:8px 2px 0;font-weight:500;font-size:15px;line-height:1.25;overflow-wrap:anywhere}
-.empty{grid-column:1/-1;padding:30px 8px;text-align:center;color:var(--mute)}
-.foot{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);color:var(--mute);font-size:13px}
-.play{display:flex;justify-content:center;align-items:center;width:100%;border:0;border-radius:12px;padding:14px;background:var(--accent);color:var(--on);font-weight:700;font-size:17px;cursor:pointer;box-shadow:0 0 16px rgba(57,255,20,.35)}
-.ghost{display:block;width:100%;margin-top:10px;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:none;cursor:pointer}
-#ov{position:fixed;inset:0;pointer-events:none}
-.back{position:absolute;inset:0;background:rgba(0,0,0,.65);opacity:0;transition:opacity .2s}
-.sheet{position:absolute;left:0;right:0;bottom:0;max-width:520px;max-height:90%;overflow-y:auto;margin:0 auto;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));background:var(--surface);border-radius:26px 26px 0 0;transform:translateY(105%);transition:transform .25s}
-#ov.open{pointer-events:auto}#ov.open .back{opacity:1}#ov.open .sheet{transform:none}
-.srow{display:flex;gap:16px;align-items:center;margin-bottom:16px}
-.srow .cv{width:110px;flex:none}
-.sheet h2{margin:0 0 4px;font-size:22px;line-height:1.15;overflow-wrap:anywhere}
-.sheet p{margin:0;color:var(--mute);font-size:14px}
-.del{color:#FF7A7A;border-color:#4A2323}
-#toast{position:fixed;left:16px;right:16px;bottom:calc(24px + env(safe-area-inset-bottom,0px));max-width:488px;margin:0 auto;padding:13px 16px;border-radius:14px;background:var(--ink);color:var(--bg);font-size:15px;opacity:0;transform:translateY(12px);transition:.2s;pointer-events:none}
-#toast.on{opacity:1;transform:none}
-.pl{position:fixed;inset:0;background:#000}
-#game{position:absolute;inset:0}
-.bk{position:fixed;z-index:99999;top:calc(8px + env(safe-area-inset-top,0px));left:8px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--accent);background:rgba(0,0,0,.7);color:var(--accent);font-weight:700;cursor:pointer}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:10px 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);font-weight:600;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--accent);color:var(--on);border-color:var(--accent)}
+.file{display:block;width:100%;padding:14px;border:1.5px dashed var(--line);border-radius:14px;background:var(--surface);color:var(--ink)}
+.go{width:100%;margin-top:18px;padding:15px;border:0;border-radius:14px;background:var(--accent);color:var(--on);font-weight:700;font-size:17px;cursor:pointer;box-shadow:0 0 16px rgba(57,255,20,.35)}
+.go:disabled{opacity:.35;box-shadow:none;cursor:default}
+.warn{padding:12px 14px;border:1.5px solid var(--accent);border-radius:12px;color:var(--ink);font-size:14px;margin:14px 0}
+#game{width:100%;aspect-ratio:4/3;max-height:70vh;background:#000;border-radius:14px;overflow:hidden}
+.res{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:15px}
+.res span:last-child{color:var(--mute)}
+.link{background:none;border:0;padding:6px 0;color:var(--mute);text-decoration:underline;cursor:pointer}
 </style>
 </head>
 <body>
-<main id="app">
-  <div class="top"><span class="logo"><img src="icon-192.png" width="40" height="40" alt="">Mandiokinha RETRO</span><span class="count" id="count"></span></div>
-  <h1>Minha biblioteca</h1>
-  <div class="lab">Adicionar jogos</div>
-  <div class="row">
-    <label class="chip add">+ SNES<input type="file" multiple hidden data-core="snes"></label>
-    <label class="chip add">+ GBA<input type="file" multiple hidden data-core="gba"></label>
-    <label class="chip add">+ PS1<input type="file" multiple hidden data-core="psx"></label>
-  </div>
-  <input class="search" id="q" type="search" placeholder="Buscar jogo" aria-label="Buscar jogo">
-  <div class="row" id="chips" style="padding-top:12px"></div>
-  <div class="grid" id="grid"></div>
-  <div class="foot" id="foot"></div>
+<main>
+  <h1>Mandiokinha RETRO</h1>
+  <p>Página de teste: veja como o seu iPhone roda cada console, direto no navegador.</p>
+  <div class="warn" id="ios" hidden>Sua versão do iOS pode não rodar emuladores no navegador. Atualize para o iOS 18.4 ou mais novo e tente de novo.</div>
+
+  <section id="setup">
+    <h2>1. Escolha o console</h2>
+    <div class="row" role="group" aria-label="Console">
+      <button class="chip" data-core="snes" aria-pressed="true">SNES</button>
+      <button class="chip" data-core="gba" aria-pressed="false">GBA</button>
+      <button class="chip" data-core="psx" aria-pressed="false">PS1</button>
+    </div>
+
+    <h2>2. Escolha o jogo</h2>
+    <input class="file" id="rom" type="file" aria-label="Arquivo do jogo">
+    <p style="margin-top:8px">PS1 precisa de um arquivo só: .chd, .iso, .pbp ou .zip. Dois arquivos (.cue e .bin) não funcionam aqui.</p>
+
+    <div id="bios" hidden>
+      <h2>BIOS do PS1</h2>
+      <input class="file" id="biosf" type="file" aria-label="Arquivo de BIOS do PS1">
+      <p style="margin-top:8px">Sua própria BIOS do PS1. Sem ela, alguns jogos não abrem.</p>
+    </div>
+
+    <button class="go" id="go" disabled>Iniciar</button>
+  </section>
+
+  <section id="stage" hidden>
+    <div id="game"></div>
+    <div class="warn" id="err" hidden>Não consegui carregar o emulador. Confira a internet e recarregue a página.</div>
+    <h2>Como rodou?</h2>
+    <div class="row">
+      <button class="chip" data-r="Rodou liso">Rodou liso</button>
+      <button class="chip" data-r="Com engasgos">Com engasgos</button>
+      <button class="chip" data-r="Não rodou">Não rodou</button>
+    </div>
+    <h2>Seus resultados</h2>
+    <div id="log"></div>
+    <button class="link" id="again">Testar outro jogo</button>
+  </section>
 </main>
-<div id="ov"><div class="back" id="back"></div><div class="sheet" id="sh" role="dialog" aria-modal="true" aria-labelledby="st"></div></div>
-<div id="toast" role="status" aria-live="polite"></div>
 <script>
-const $=s=>document.querySelector(s);
-const NOME={snes:'SNES',gba:'GBA',psx:'PS1'},COR={snes:'#39FF14',gba:'#00C896',psx:'#C6FF4D'};
+/* Os arquivos do emulador vêm deste endereço. Se um dia sair do ar, baixe a pasta "data" do EmulatorJS e hospede junto desta página. */
 const BASE='https://cdn.emulatorjs.org/stable/data/';
+const $=s=>document.querySelector(s);
+const NOME={snes:'SNES',gba:'GBA',psx:'PS1'};
+let core='snes',jogo='';
 
-/* Armazenamento no aparelho (IndexedDB): "g" guarda os dados do jogo, "b" guarda o arquivo. */
-let dbp;
-const db=()=>dbp||(dbp=new Promise((ok,no)=>{const r=indexedDB.open('mandiokinha',1);
-  r.onupgradeneeded=()=>{r.result.createObjectStore('g',{keyPath:'id',autoIncrement:true});r.result.createObjectStore('b')};
-  r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}));
-async function rq(st,mode,fn){const d=await db();return new Promise((ok,no)=>{const t=d.transaction(st,mode);let q;
-  t.oncomplete=()=>ok(q&&q.result);t.onerror=()=>no(t.error);t.onabort=()=>no(t.error);q=fn(t)})}
-const lerTodos=()=>rq(['g'],'readonly',t=>t.objectStore('g').getAll());
-const lerJogo=id=>rq(['g'],'readonly',t=>t.objectStore('g').get(id));
-const lerArquivo=id=>rq(['b'],'readonly',t=>t.objectStore('b').get(id));
-const salvarJogo=g=>rq(['g'],'readwrite',t=>t.objectStore('g').put(g));
-const remover=id=>rq(['g','b'],'readwrite',t=>{t.objectStore('g').delete(id);t.objectStore('b').delete(id)});
-async function adicionar(file,core){
-  const id=await rq(['g'],'readwrite',t=>t.objectStore('g').add({name:file.name.replace(/\.[^.]+$/,''),core,size:file.size,fav:0,last:0}));
-  try{await rq(['b'],'readwrite',t=>t.objectStore('b').put(file,id))}
-  catch(e){await remover(id);throw e}
-}
+const m=navigator.userAgent.match(/OS 18[_.]([23])\b/);
+if(m)$('#ios').hidden=false;
 
-const mb=n=>n>=1e9?(n/1e9).toFixed(1).replace('.',',')+' GB':Math.max(1,Math.round(n/1e6))+' MB';
-let L=[],f='Todos',q='',tt;
-function toast(m,ms=2800){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);if(ms)tt=setTimeout(()=>t.classList.remove('on'),ms)}
-
-/* Capa gerada: um sprite simétrico por jogo. Depois dá para trocar por imagens de verdade. */
-function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
-function cover(g){let h=hash(g.name),r='';for(let y=0;y<7;y++)for(let x=0;x<4;x++){h=Math.imul(h^(h>>>13),1597334677)>>>0;if(h&1){r+=`<rect x="${x+.5}" y="${y+.5}" width="1" height="1"/>`;if(x<3)r+=`<rect x="${6.5-x}" y="${y+.5}" width="1" height="1"/>`}}
-return `<svg viewBox="0 0 8 8" shape-rendering="crispEdges" fill="#39FF14" fill-opacity=".95" aria-hidden="true">${r}</svg>`}
-const cvStyle=g=>`background:linear-gradient(160deg,color-mix(in srgb,${COR[g.core]} 28%,#000),#020602)`;
-const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-function lista(){return L.filter(g=>(f==='Todos'||(f==='Favoritos'?g.fav:NOME[g.core]===f))&&g.name.toLowerCase().includes(q))}
-function chips(){$('#chips').innerHTML=['Todos','Favoritos','SNES','GBA','PS1'].map(x=>`<button class="chip" aria-pressed="${x===f}" data-f="${x}">${x}</button>`).join('')}
-async function render(){
-  const l=lista();
-  $('#count').textContent=`${L.length} ${L.length===1?'jogo':'jogos'}`;
-  $('#grid').innerHTML=l.length?l.map(g=>`<div class="cell"><button class="card" data-open="${g.id}" aria-label="${esc(g.name)}, ${NOME[g.core]}"><div class="cv" style="${cvStyle(g)}">${cover(g)}<span class="tag">${NOME[g.core]}</span>${g.fav?'<span class="star">★</span>':''}</div><div class="name">${esc(g.name)}</div></button></div>`).join(''):
-    `<p class="empty">${L.length?'Nenhum jogo encontrado. Tente outro nome ou outro console.':'Sua biblioteca está vazia. Toque em + SNES, + GBA ou + PS1 para adicionar jogos que estão no seu celular.'}</p>`;
-  const tot=L.reduce((a,g)=>a+g.size,0);let extra='';
-  try{const e=await navigator.storage.estimate();extra=` O site usa ${mb(e.usage)} de ${mb(e.quota)} permitidos.`}catch(_){}
-  $('#foot').textContent=`Neste celular: ${L.length} ${L.length===1?'jogo':'jogos'}, ${mb(tot)}.${extra}`;
-}
-async function carregar(){L=(await lerTodos()).sort((a,b)=>b.last-a.last||a.name.localeCompare(b.name))}
-
-function abrir(id){const g=L.find(x=>x.id===id);if(!g)return;
-  $('#sh').innerHTML=`<div class="srow"><div class="cv" style="${cvStyle(g)}">${cover(g)}</div><div><h2 id="st">${esc(g.name)}</h2><p>${NOME[g.core]}, ${mb(g.size)}</p></div></div>
-<button class="play" data-play="${g.id}">Jogar</button>
-<button class="ghost" data-fav="${g.id}">${g.fav?'Tirar dos favoritos':'Favoritar'}</button>
-<button class="ghost del" data-del="${g.id}">Remover do celular</button>
-<button class="ghost" data-close style="border:0;color:var(--mute)">Fechar</button>`;
-  $('#ov').classList.add('open');$('.play').focus()}
-const fechar=()=>$('#ov').classList.remove('open');
-
-document.addEventListener('click',async e=>{
-  const t=e.target.closest('[data-f],[data-open],[data-play],[data-fav],[data-del],[data-close],#back');if(!t)return;const d=t.dataset;
-  if(d.f){f=d.f;chips();render()}
-  else if(d.open)abrir(+d.open);
-  else if(d.play){location.hash='#play='+d.play;location.reload()}
-  else if(d.fav){const g=L.find(x=>x.id===+d.fav);g.fav=g.fav?0:1;await salvarJogo(g);render();abrir(g.id)}
-  else if(d.del){const g=L.find(x=>x.id===+d.del);if(confirm(`Remover "${g.name}" deste celular?`)){await remover(g.id);await carregar();fechar();render()}}
-  else fechar();
+document.querySelectorAll('[data-core]').forEach(b=>b.onclick=()=>{
+  core=b.dataset.core;
+  document.querySelectorAll('[data-core]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  $('#bios').hidden=core!=='psx';
 });
-$('#q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')fechar()});
+$('#rom').onchange=()=>{$('#go').disabled=!$('#rom').files[0]};
 
-document.addEventListener('change',async e=>{
-  const i=e.target,core=i.dataset&&i.dataset.core;if(!core)return;
-  const fs=[...i.files];i.value='';let n=0,ok=0;
-  for(const x of fs){toast(`Adicionando ${++n} de ${fs.length}...`,0);
-    try{await adicionar(x,core);ok++}catch(err){toast('Não coube. Libere espaço no iPhone ou escolha menos jogos.',5000);break}}
-  try{navigator.storage.persist()}catch(_){}
-  await carregar();render();
-  if(ok===fs.length)toast(ok===1?'Jogo adicionado.':`${ok} jogos adicionados.`);
-});
+$('#go').onclick=()=>{
+  const f=$('#rom').files[0];if(!f)return;
+  jogo=f.name.replace(/\.[^.]+$/,'');
+  $('#setup').hidden=true;$('#stage').hidden=false;
+  window.EJS_player='#game';
+  window.EJS_core=core;
+  window.EJS_gameName=jogo;
+  window.EJS_gameUrl=URL.createObjectURL(f);
+  const b=$('#biosf').files[0];
+  if(core==='psx'&&b)window.EJS_biosUrl=URL.createObjectURL(b);
+  window.EJS_pathtodata=BASE;
+  window.EJS_color='#39FF14';
+  window.EJS_backgroundColor='#000000';
+  window.EJS_startOnLoaded=false;
+  const s=document.createElement('script');
+  s.src=BASE+'loader.js';
+  s.onerror=()=>{$('#err').hidden=false};
+  document.body.appendChild(s);
+  mostrar();
+};
 
-/* Modo jogo: a página recarrega limpa e abre só o emulador. */
-async function jogar(id){
-  const g=await lerJogo(id),file=g&&await lerArquivo(id);
-  document.body.innerHTML='<div class="pl"><div id="game"></div></div><button class="bk" id="bk">‹ Voltar</button>';
-  if(!g||!file){document.body.insertAdjacentHTML('beforeend','<p style="position:fixed;top:30%;left:0;right:0;text-align:center;color:#8A9C86">Não encontrei esse jogo. Volte e tente de novo.</p>');}
-  else{
-    g.last=Date.now();salvarJogo(g);
-    window.EJS_player='#game';window.EJS_core=g.core;window.EJS_gameName=g.name;
-    window.EJS_gameUrl=URL.createObjectURL(file);
-    window.EJS_pathtodata=BASE;window.EJS_color='#39FF14';window.EJS_backgroundColor='#000000';window.EJS_startOnLoaded=false;
-    const s=document.createElement('script');s.src=BASE+'loader.js';
-    s.onerror=()=>document.body.insertAdjacentHTML('beforeend','<p style="position:fixed;top:30%;left:0;right:0;text-align:center;color:#8A9C86">Não consegui carregar o emulador. Confira a internet e tente de novo.</p>');
-    document.body.appendChild(s);
-  }
-  $('#bk').onclick=()=>{history.replaceState(null,'',location.pathname);location.reload()};
+function lerLog(){try{return JSON.parse(localStorage.getItem('mr-teste')||'[]')}catch(e){return[]}}
+function mostrar(){
+  const l=lerLog();
+  $('#log').innerHTML=l.length?l.map(x=>`<div class="res"><span>${x.c}: ${x.j}</span><span>${x.r}</span></div>`).join(''):'<p>Nada anotado ainda. Depois de jogar um pouco, toque em uma das opções acima.</p>';
 }
-
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
-if(/^#play=\d+$/.test(location.hash))jogar(+location.hash.slice(6));
-else{chips();carregar().then(render)}
+document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{
+  const l=lerLog();l.push({c:NOME[core],j:jogo,r:b.dataset.r});
+  try{localStorage.setItem('mr-teste',JSON.stringify(l))}catch(e){}
+  mostrar();
+});
+$('#again').onclick=()=>location.reload();
 </script>
 </body>
 </html>
