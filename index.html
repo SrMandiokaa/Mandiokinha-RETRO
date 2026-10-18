@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#030603">
+<title>Mandiokinha RETRO: teste</title>
+<style>
+:root{--bg:#030603;--surface:#0C130C;--ink:#E8FFE2;--mute:#8A9C86;--line:#1C2B1C;--accent:#39FF14;--on:#021002;
+box-sizing:border-box;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;background-image:radial-gradient(120% 55% at 50% 112%,rgba(57,255,20,.16),transparent 62%);background-attachment:fixed}
+main{max-width:560px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:26px;line-height:1.15;margin:0 0 4px}
+h2{font-size:17px;margin:26px 0 8px}
+p{margin:0 0 12px;color:var(--mute);font-size:14px}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:10px 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);font-weight:600;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--accent);color:var(--on);border-color:var(--accent)}
+.file{display:block;width:100%;padding:14px;border:1.5px dashed var(--line);border-radius:14px;background:var(--surface);color:var(--ink)}
+.go{width:100%;margin-top:18px;padding:15px;border:0;border-radius:14px;background:var(--accent);color:var(--on);font-weight:700;font-size:17px;cursor:pointer;box-shadow:0 0 16px rgba(57,255,20,.35)}
+.go:disabled{opacity:.35;box-shadow:none;cursor:default}
+.warn{padding:12px 14px;border:1.5px solid var(--accent);border-radius:12px;color:var(--ink);font-size:14px;margin:14px 0}
+#game{width:100%;aspect-ratio:4/3;max-height:70vh;background:#000;border-radius:14px;overflow:hidden}
+.res{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:15px}
+.res span:last-child{color:var(--mute)}
+.link{background:none;border:0;padding:6px 0;color:var(--mute);text-decoration:underline;cursor:pointer}
+</style>
+</head>
+<body>
+<main>
+  <h1>Mandiokinha RETRO</h1>
+  <p>Página de teste: veja como o seu iPhone roda cada console, direto no navegador.</p>
+  <div class="warn" id="ios" hidden>Sua versão do iOS pode não rodar emuladores no navegador. Atualize para o iOS 18.4 ou mais novo e tente de novo.</div>
+
+  <section id="setup">
+    <h2>1. Escolha o console</h2>
+    <div class="row" role="group" aria-label="Console">
+      <button class="chip" data-core="snes" aria-pressed="true">SNES</button>
+      <button class="chip" data-core="gba" aria-pressed="false">GBA</button>
+      <button class="chip" data-core="psx" aria-pressed="false">PS1</button>
+    </div>
+
+    <h2>2. Escolha o jogo</h2>
+    <input class="file" id="rom" type="file" aria-label="Arquivo do jogo">
+    <p style="margin-top:8px">PS1 precisa de um arquivo só: .chd, .iso, .pbp ou .zip. Dois arquivos (.cue e .bin) não funcionam aqui.</p>
+
+    <div id="bios" hidden>
+      <h2>BIOS do PS1</h2>
+      <input class="file" id="biosf" type="file" aria-label="Arquivo de BIOS do PS1">
+      <p style="margin-top:8px">Sua própria BIOS do PS1. Sem ela, alguns jogos não abrem.</p>
+    </div>
+
+    <button class="go" id="go" disabled>Iniciar</button>
+  </section>
+
+  <section id="stage" hidden>
+    <div id="game"></div>
+    <div class="warn" id="err" hidden>Não consegui carregar o emulador. Confira a internet e recarregue a página.</div>
+    <h2>Como rodou?</h2>
+    <div class="row">
+      <button class="chip" data-r="Rodou liso">Rodou liso</button>
+      <button class="chip" data-r="Com engasgos">Com engasgos</button>
+      <button class="chip" data-r="Não rodou">Não rodou</button>
+    </div>
+    <h2>Seus resultados</h2>
+    <div id="log"></div>
+    <button class="link" id="again">Testar outro jogo</button>
+  </section>
+</main>
+<script>
+/* Os arquivos do emulador vêm deste endereço. Se um dia sair do ar, baixe a pasta "data" do EmulatorJS e hospede junto desta página. */
+const BASE='https://cdn.emulatorjs.org/stable/data/';
+const $=s=>document.querySelector(s);
+const NOME={snes:'SNES',gba:'GBA',psx:'PS1'};
+let core='snes',jogo='';
+
+const m=navigator.userAgent.match(/OS 18[_.]([23])\b/);
+if(m)$('#ios').hidden=false;
+
+document.querySelectorAll('[data-core]').forEach(b=>b.onclick=()=>{
+  core=b.dataset.core;
+  document.querySelectorAll('[data-core]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  $('#bios').hidden=core!=='psx';
+});
+$('#rom').onchange=()=>{$('#go').disabled=!$('#rom').files[0]};
+
+$('#go').onclick=()=>{
+  const f=$('#rom').files[0];if(!f)return;
+  jogo=f.name.replace(/\.[^.]+$/,'');
+  $('#setup').hidden=true;$('#stage').hidden=false;
+  window.EJS_player='#game';
+  window.EJS_core=core;
+  window.EJS_gameName=jogo;
+  window.EJS_gameUrl=URL.createObjectURL(f);
+  const b=$('#biosf').files[0];
+  if(core==='psx'&&b)window.EJS_biosUrl=URL.createObjectURL(b);
+  window.EJS_pathtodata=BASE;
+  window.EJS_color='#39FF14';
+  window.EJS_backgroundColor='#000000';
+  window.EJS_startOnLoaded=false;
+  const s=document.createElement('script');
+  s.src=BASE+'loader.js';
+  s.onerror=()=>{$('#err').hidden=false};
+  document.body.appendChild(s);
+  mostrar();
+};
+
+function lerLog(){try{return JSON.parse(localStorage.getItem('mr-teste')||'[]')}catch(e){return[]}}
+function mostrar(){
+  const l=lerLog();
+  $('#log').innerHTML=l.length?l.map(x=>`<div class="res"><span>${x.c}: ${x.j}</span><span>${x.r}</span></div>`).join(''):'<p>Nada anotado ainda. Depois de jogar um pouco, toque em uma das opções acima.</p>';
+}
+document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{
+  const l=lerLog();l.push({c:NOME[core],j:jogo,r:b.dataset.r});
+  try{localStorage.setItem('mr-teste',JSON.stringify(l))}catch(e){}
+  mostrar();
+});
+$('#again').onclick=()=>location.reload();
+</script>
+</body>
+</html>
